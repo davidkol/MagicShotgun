@@ -12,3 +12,4 @@ Saved
 *.xcworkspace
 *.db-wal
 *.db-shm
+.vs/
