@@ -16,7 +16,7 @@ class MAGICSHOTGUN_API APatrollingGuard : public ATP_ThirdPersonCharacter
 	
 public:
 	UPROPERTY(EditInstanceOnly, Category = "Patrol Route")
-	TArray<AActor*> PatrolPoints_CPP;
+		TArray<AActor*> PatrolPoints_CPP;
 
-	
+
 };
