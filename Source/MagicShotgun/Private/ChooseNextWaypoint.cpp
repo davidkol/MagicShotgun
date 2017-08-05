@@ -11,6 +11,7 @@ EBTNodeResult::Type UChooseNextWaypoint::ExecuteTask(UBehaviorTreeComponent& Own
 	auto ControlledPawn = AIController->GetPawn();
 	auto PatrolGuardComp = ControlledPawn->FindComponentByClass<UPatrollingGuardComp>();
 	
+
 	if (!ensure(PatrolGuardComp)) { return EBTNodeResult::Failed; }
 
 	auto PatrolPoints = PatrolGuardComp->GetPatrolPoints();
