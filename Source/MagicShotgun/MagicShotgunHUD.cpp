@@ -18,7 +18,6 @@ AMagicShotgunHUD::AMagicShotgunHUD()
 void AMagicShotgunHUD::DrawHUD()
 {
 	Super::DrawHUD();
-
 	// Draw very simple crosshair
 
 	// find center of the Canvas
