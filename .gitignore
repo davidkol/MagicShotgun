@@ -12,4 +12,5 @@ Saved
 *.xcworkspace
 *.db-wal
 *.db-shm
+*BuiltData.uasset
 .vs/
