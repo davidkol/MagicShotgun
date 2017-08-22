@@ -11,11 +11,19 @@ ATile::ATile()
 
 }
 
-void ATile::PlaceActors()
+void ATile::PlaceActors(TSubclassOf<AActor> ToSpawn, int32 MinSpawn, int32 MaxSpawn)
 {
-
-	auto rando = FMath::RandPointInBox(FBox(FVector(0, -1900.0f, -100.0f), FVector(3950.0f, 1900.0f, 0.0f)));
-	//UE_LOG(LogTemp, Warning, TEXT("%s"), *rando.ToString());
+	FVector Min(0, -2000, -100);
+	FVector Max(4000, 2000, -100);
+	FBox Bounds(Min, Max);
+	int32 NumberToSpawn = FMath::RandRange(MinSpawn, MaxSpawn);
+	for (size_t i = 0; i < NumberToSpawn; i++)
+	{
+		FVector SpawnPoint = FMath::RandPointInBox(Bounds);
+		AActor* Spawned = GetWorld()->SpawnActor<AActor>(ToSpawn);
+		Spawned->SetActorRelativeLocation(SpawnPoint);
+		Spawned->AttachToActor(this, FAttachmentTransformRules(EAttachmentRule::KeepRelative, false));
+	}
 }
 
 // Called when the game starts or when spawned
