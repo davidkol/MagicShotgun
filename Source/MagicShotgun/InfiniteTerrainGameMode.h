@@ -7,6 +7,7 @@
 #include "InfiniteTerrainGameMode.generated.h"
 
 class ANavMeshBoundsVolume;
+class UActorPool;
 
 /**
  * 
@@ -16,11 +17,18 @@ class MAGICSHOTGUN_API AInfiniteTerrainGameMode : public AMagicShotgunGameMode
 {
 	GENERATED_BODY()
 public:
+	AInfiniteTerrainGameMode();
 
-	UFUNCTION(BlueprintCallable, Category = "Environment")
+	UFUNCTION(BlueprintCallable, Category = "Bounds Pool")
 	void PopulateBoundsVolumePool();
 	
+protected:
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Bounds Pool")
+	UActorPool* NavMeshBoundsVolumePool;
+
 private:
 
 	void AddToPool(ANavMeshBoundsVolume* BoundsVolumeToAdd);
+
 };

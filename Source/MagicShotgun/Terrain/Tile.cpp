@@ -3,13 +3,19 @@
 #include "Tile.h"
 #include "DrawDebugHelpers.h"
 #include "WorldCollision.h"
-
+#include "ActorPool.h"
 // Sets default values
 ATile::ATile()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
+}
+
+void ATile::SetPool(UActorPool* InPool)
+{
+	Pool = InPool;
+	UE_LOG(LogTemp, Warning, TEXT("%s sets %s"), *this->GetName(), *InPool->GetName());
 }
 
 // Called when the game starts or when spawned
@@ -41,6 +47,7 @@ void ATile::PlaceActors(TSubclassOf<AActor> ToSpawn, int32 MinSpawn, int32 MaxSp
 		}
 	}
 }
+
 
 bool ATile::FindEmptyLocation(FVector& OutLocation, float Radius)
 {
