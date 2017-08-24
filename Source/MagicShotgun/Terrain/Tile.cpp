@@ -16,6 +16,7 @@ ATile::ATile()
 void ATile::BeginPlay()
 {
 	Super::BeginPlay();
+
 }
 
 // Called every frame
