@@ -4,6 +4,7 @@
 #include "DrawDebugHelpers.h"
 #include "WorldCollision.h"
 #include "ActorPool.h"
+
 // Sets default values
 ATile::ATile()
 {
@@ -16,13 +17,22 @@ void ATile::SetPool(UActorPool* InPool)
 {
 	Pool = InPool;
 	UE_LOG(LogTemp, Warning, TEXT("%s sets %s"), *this->GetName(), *InPool->GetName());
+
+	PositionNavMeshBoundsVolume();
+
 }
+
 
 // Called when the game starts or when spawned
 void ATile::BeginPlay()
 {
 	Super::BeginPlay();
 
+}
+
+void ATile::EndPlay(const EEndPlayReason::Type EndPlayReason)
+{
+	Pool->Return(NavMeshBoundsVolume);
 }
 
 // Called every frame
@@ -92,3 +102,14 @@ bool ATile::CanSpawnAtLocation(FVector Location, float Radius)
 	return !bHasHit; 
 }
 
+
+void ATile::PositionNavMeshBoundsVolume()
+{
+	NavMeshBoundsVolume = Pool->Checkout();
+	if (NavMeshBoundsVolume == nullptr) 
+	{
+		UE_LOG(LogTemp, Error, TEXT("Not enough actors in pool"));
+		return;
+	}
+	NavMeshBoundsVolume->SetActorLocation(GetActorLocation());
+}
