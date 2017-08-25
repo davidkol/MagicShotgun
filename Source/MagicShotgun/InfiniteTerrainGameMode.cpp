@@ -24,3 +24,14 @@ void AInfiniteTerrainGameMode::AddToPool(ANavMeshBoundsVolume* BoundsVolumeToAdd
 {
 	NavMeshBoundsVolumePool->Add(BoundsVolumeToAdd);
 }
+
+void AInfiniteTerrainGameMode::NewTileConquered()
+{
+	Score++;
+}
+
+int32 AInfiniteTerrainGameMode::GetScore()
+{
+	return Score;
+}
+

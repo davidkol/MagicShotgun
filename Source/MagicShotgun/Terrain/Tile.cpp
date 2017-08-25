@@ -5,7 +5,7 @@
 #include "WorldCollision.h"
 #include "ActorPool.h"
 #include "AI/Navigation/NavigationSystem.h"
-
+#include "InfiniteTerrainGameMode.h"
 
 // Sets default values
 ATile::ATile()
@@ -20,8 +20,6 @@ ATile::ATile()
 void ATile::SetPool(UActorPool* InPool)
 {
 	Pool = InPool;
-	UE_LOG(LogTemp, Warning, TEXT("[%s] Setting Pool {%s}"), *this->GetName(), *InPool->GetName());
-
 	PositionNavMeshBoundsVolume();
 
 }
@@ -65,6 +63,7 @@ void ATile::PlaceActor(TSubclassOf<AActor> ToSpawn, const FSpawnPosition& SpawnP
 	Spawned->SetActorRotation(FRotator(0, SpawnPosition.Rotation, 0));
 	Spawned->SetActorRelativeScale3D(FVector(SpawnPosition.Scale));
 }
+
 void ATile::PlaceActor(TSubclassOf<APawn> ToSpawn, const FSpawnPosition&  SpawnPosition)
 {
 	APawn* Spawned = GetWorld()->SpawnActor<APawn>(ToSpawn);
@@ -133,7 +132,15 @@ void ATile::PositionNavMeshBoundsVolume()
 		UE_LOG(LogTemp, Error, TEXT("[%s] Not enough actors in pool"), *GetName());
 		return;
 	}
-	UE_LOG(LogTemp, Warning, TEXT("[%s] Checked out: [%s]"), *GetName(), *NavMeshBoundsVolume->GetName());
 	NavMeshBoundsVolume->SetActorLocation(GetActorLocation() + NavigationBoundsOffset);
 	GetWorld()->GetNavigationSystem()->Build();
+}
+
+void ATile::TileConquered()
+{
+	if (!IsTileConquered)
+	{
+		((AInfiniteTerrainGameMode*)GetWorld()->GetAuthGameMode())->NewTileConquered();
+		IsTileConquered = true;
+	}
 }

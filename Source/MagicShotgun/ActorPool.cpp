@@ -29,11 +29,6 @@ void UActorPool::Return(AActor* ActorToReturn)
 
 void UActorPool::Add(AActor* ActorToAdd)
 {
-// 	if (ActorToAdd == nullptr)
-// 	{
-// 		UE_LOG(LogTemp, Warning, TEXT("%s added null actor"), *GetName());
-// 		return;
-// 	} TODO
 	Pool.Push(ActorToAdd);
 }
 

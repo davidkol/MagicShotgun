@@ -37,8 +37,9 @@ public:
 	
 	UFUNCTION(BlueprintCallable, Category = "Environment")
 	void PlaceAIPawns(TSubclassOf<APawn> ToSpawn, int32 MinSpawn = 1, int32 MaxSpawn = 1, float Radius = 500.f);
-
-
+	
+	UFUNCTION(BlueprintCallable, Category = "HUD")
+	void TileConquered();
 
 protected:
 	// Called when the game starts or when spawned
@@ -71,6 +72,8 @@ private:
 	bool CanSpawnAtLocation(FVector Location, float Radius);
 	
 	void PositionNavMeshBoundsVolume();
+
+	bool IsTileConquered = false;
 
 	UActorPool* Pool;
 	AActor* NavMeshBoundsVolume;
