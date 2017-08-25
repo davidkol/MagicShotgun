@@ -4,12 +4,15 @@
 #include "DrawDebugHelpers.h"
 #include "WorldCollision.h"
 #include "ActorPool.h"
+#include "AI/Navigation/NavigationSystem.h"
+
 
 // Sets default values
 ATile::ATile()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
+	NavigationBoundsOffset = FVector(2000, 0, 0);
 	MinSpawningExtent = FVector(0, -2000, -100);
 	MaxSpawningExtent = FVector(4000, 2000, -100);
 }
@@ -17,7 +20,7 @@ ATile::ATile()
 void ATile::SetPool(UActorPool* InPool)
 {
 	Pool = InPool;
-	UE_LOG(LogTemp, Warning, TEXT("[%s] Setting {Pool %s}"), *this->GetName(), *InPool->GetName());
+	UE_LOG(LogTemp, Warning, TEXT("[%s] Setting Pool {%s}"), *this->GetName(), *InPool->GetName());
 
 	PositionNavMeshBoundsVolume();
 
@@ -111,5 +114,6 @@ void ATile::PositionNavMeshBoundsVolume()
 		return;
 	}
 	UE_LOG(LogTemp, Warning, TEXT("[%s] Checked out: [%s]"), *GetName(), *NavMeshBoundsVolume->GetName());
-	NavMeshBoundsVolume->SetActorLocation(GetActorLocation());
+	NavMeshBoundsVolume->SetActorLocation(GetActorLocation() + NavigationBoundsOffset);
+	GetWorld()->GetNavigationSystem()->Build();
 }
