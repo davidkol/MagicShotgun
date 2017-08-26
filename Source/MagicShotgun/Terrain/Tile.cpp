@@ -34,7 +34,10 @@ void ATile::BeginPlay()
 
 void ATile::EndPlay(const EEndPlayReason::Type EndPlayReason)
 {
-	Pool->Return(NavMeshBoundsVolume);
+	if (Pool != nullptr && NavMeshBoundsVolume != nullptr)
+	{
+		Pool->Return(NavMeshBoundsVolume);
+	}
 }
 
 // Called every frame
