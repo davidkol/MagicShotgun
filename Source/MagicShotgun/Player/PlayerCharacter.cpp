@@ -37,28 +37,28 @@ void APlayerCharacter::SetupPlayerInputComponent(class UInputComponent* PlayerIn
 
 void APlayerCharacter::PullTrigger()
 {
-	ShotGun->OnFire();
+	Gun->OnFire();
 }
 
 void APlayerCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-	if (ShotGunBlueprint == nullptr)
+	if (GunBlueprint == nullptr)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("Gun blueprint missing."));
 		return;
 	}
-	ShotGun = GetWorld()->SpawnActor<AGun>(ShotGunBlueprint);
+	Gun = GetWorld()->SpawnActor<AGun>(GunBlueprint);
 	if (IsPlayerControlled())
 	{
-		ShotGun->AttachToComponent(Mesh1P, FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true), TEXT("GripPoint")); //Attach gun mesh component to Skeleton, doing it here because the skelton is not yet created in the constructor
+		Gun->AttachToComponent(Mesh1P, FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true), TEXT("GripPoint")); //Attach gun mesh component to Skeleton, doing it here because the skelton is not yet created in the constructor
 	}
 	else
 	{
-		ShotGun->AttachToComponent(GetMesh(), FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true), TEXT("GripPoint_0"));
+		Gun->AttachToComponent(GetMesh(), FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true), TEXT("GripPoint_0"));
 	}
-	ShotGun->AnimInstance1P = Mesh1P->GetAnimInstance();
-	ShotGun->AnimInstance3P = GetMesh()->GetAnimInstance();
+	Gun->AnimInstance1P = Mesh1P->GetAnimInstance();
+	Gun->AnimInstance3P = GetMesh()->GetAnimInstance();
 
 	if (InputComponent != nullptr)
 	{

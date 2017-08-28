@@ -23,7 +23,7 @@ public:
 	void PullTrigger();
 
 	UPROPERTY(EditDefaultsOnly, Category = "Setup")
-	TSubclassOf<class AGun> ShotGunBlueprint;
+	TSubclassOf<class AGun> GunBlueprint;
 
 protected:
 	virtual void BeginPlay() override;
@@ -35,7 +35,7 @@ private:
 	class UCameraComponent* FirstPersonCameraComponent;
 	
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
-	AGun* ShotGun;
+	AGun* Gun;
 
 	/** Pawn mesh: 1st person view (arms; seen only by self) */
 	UPROPERTY(VisibleDefaultsOnly, Category = Mesh)
