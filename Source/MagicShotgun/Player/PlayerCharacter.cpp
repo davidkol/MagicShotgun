@@ -7,6 +7,7 @@
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "Components/InputComponent.h"
+#include "Grabber.h"
 
 
 
@@ -27,6 +28,7 @@ APlayerCharacter::APlayerCharacter()
 	FirstPersonCameraComponent->bUsePawnControlRotation = true;
 	Mesh1P->SetupAttachment(FirstPersonCameraComponent);
 
+	Grabber = CreateDefaultSubobject<UGrabber>(TEXT("Grabber"));
 
 }
 
@@ -38,6 +40,16 @@ void APlayerCharacter::SetupPlayerInputComponent(class UInputComponent* PlayerIn
 void APlayerCharacter::PullTrigger()
 {
 	Gun->OnFire();
+}
+
+void APlayerCharacter::GrabItem()
+{
+
+}
+
+USkeletalMeshComponent* APlayerCharacter::GetMesh1P()
+{
+	return Mesh1P;
 }
 
 void APlayerCharacter::BeginPlay()
@@ -64,4 +76,9 @@ void APlayerCharacter::BeginPlay()
 	{
 		InputComponent->BindAction("PullTrigger", IE_Pressed, this, &APlayerCharacter::PullTrigger);
 	}
+}
+
+bool APlayerCharacter::CanGrabItem()
+{
+	return false;
 }
