@@ -8,6 +8,7 @@
 #include "Components/CapsuleComponent.h"
 #include "Components/InputComponent.h"
 #include "Grabber.h"
+#include "Weapons/Melee.h"
 
 
 
@@ -39,7 +40,13 @@ void APlayerCharacter::SetupPlayerInputComponent(class UInputComponent* PlayerIn
 
 void APlayerCharacter::PullTrigger()
 {
-	Gun->OnFire();
+	if (Melee == nullptr)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("melee is null"));
+		return;
+	}
+	Melee->OnSwing();
+	//Gun->OnFire();
 }
 
 void APlayerCharacter::GrabItem()
@@ -52,33 +59,34 @@ USkeletalMeshComponent* APlayerCharacter::GetMesh1P()
 	return Mesh1P;
 }
 
+AMelee* APlayerCharacter::GetMelee()
+{
+	return Melee;
+}
+
 void APlayerCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-	if (GunBlueprint == nullptr)
-	{
-		UE_LOG(LogTemp, Warning, TEXT("Gun blueprint missing."));
-		return;
-	}
-	Gun = GetWorld()->SpawnActor<AGun>(GunBlueprint);
-	if (IsPlayerControlled())
-	{
-		Gun->AttachToComponent(Mesh1P, FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true), TEXT("GripPoint")); //Attach gun mesh component to Skeleton, doing it here because the skelton is not yet created in the constructor
-	}
-	else
-	{
-		Gun->AttachToComponent(GetMesh(), FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true), TEXT("GripPoint_0"));
-	}
-	Gun->AnimInstance1P = Mesh1P->GetAnimInstance();
-	Gun->AnimInstance3P = GetMesh()->GetAnimInstance();
-
-	if (InputComponent != nullptr)
-	{
-		InputComponent->BindAction("PullTrigger", IE_Pressed, this, &APlayerCharacter::PullTrigger);
-	}
+// 	if (GunBlueprint == nullptr)
+// 	{
+// 		UE_LOG(LogTemp, Warning, TEXT("Gun blueprint missing."));
+// 		return;
+// 	}
+// 	Gun = GetWorld()->SpawnActor<AGun>(GunBlueprint);
+// 	if (IsPlayerControlled())
+// 	{
+// 		Gun->AttachToComponent(Mesh1P, FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true), TEXT("GripPoint")); //Attach gun mesh component to Skeleton, doing it here because the skelton is not yet created in the constructor
+// 	}
+// 	else
+// 	{
+// 		Gun->AttachToComponent(GetMesh(), FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true), TEXT("GripPoint_0"));
+// 	}
+// 	Gun->AnimInstance1P = Mesh1P->GetAnimInstance();
+// 	Gun->AnimInstance3P = GetMesh()->GetAnimInstance();
+// 
+// 	if (InputComponent != nullptr)
+// 	{
+// 		InputComponent->BindAction("PullTrigger", IE_Pressed, this, &APlayerCharacter::PullTrigger);
+// 	}
 }
 
-bool APlayerCharacter::CanGrabItem()
-{
-	return false;
-}

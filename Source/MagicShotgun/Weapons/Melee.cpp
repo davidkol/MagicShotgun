@@ -31,6 +31,9 @@ void AMelee::Tick(float DeltaTime)
 
 void AMelee::OnSwing()
 {
-
+// 	FRotator rotator = Melee_Weapon->GetComponentRotation();
+// 	FRotator additionalrotation = FRotator(90, 0, 0);
+// 	UE_LOG(LogTemp, Warning, TEXT("%s"), *(rotator.ToString()));
+// 	Melee_Weapon->SetWorldRotation(rotator+additionalrotation);
 }
 

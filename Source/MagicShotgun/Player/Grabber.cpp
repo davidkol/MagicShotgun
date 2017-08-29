@@ -5,6 +5,7 @@
 #include "Components/InputComponent.h"
 #include "DrawDebugHelpers.h"
 #include "PlayerCharacter.h"
+#include "Weapons/Melee.h"
 #define OUT
 
 // Sets default values for this component's properties
@@ -58,11 +59,8 @@ void UGrabber::Grab()
 	/// If we hit something, then attach a physics handle
 	if (GetFirstPhysicsBodyInReach(HitResult))
 	{
-		UPrimitiveComponent* ComponentToGrab = HitResult.GetComponent(); // gets the mesh component in our case
-		AActor* ActorHit = HitResult.GetActor();
-		ActorHit->
-		UE_LOG(LogTemp, Warning, TEXT("grabbable actor [%s]"), *(ActorHit->GetName()));
-		ActorHit->AttachToComponent(PlayerCharacter->GetMesh1P(), FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true), TEXT("GripPoint"));
+		PlayerCharacter->Melee = (AMelee*)(HitResult.GetActor());
+		PlayerCharacter->Melee->AttachToComponent(PlayerCharacter->GetMesh1P(), FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true), TEXT("GripPoint"));
 // 		if (!PhysicsHandle) { return; }
 // 		PhysicsHandle->GrabComponent(
 // 			ComponentToGrab,

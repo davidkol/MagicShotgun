@@ -15,7 +15,7 @@ public:
 	// Sets default values for this actor's properties
 	AMelee();
 
-	UPROPERTY(VisibleDefaultsOnly, Category = Mesh)
+	UPROPERTY(VisibleDefaultsOnly, BlueprintReadWrite, Category = Mesh)
 	class USkeletalMeshComponent* Melee_Weapon;
 protected:
 	// Called when the game starts or when spawned
@@ -24,6 +24,9 @@ protected:
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
+
+	UFUNCTION(BlueprintCallable, Category = "Input")
+	void OnSwing();
 
 	/** Sound to play each time we fire */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Gameplay)
@@ -41,7 +44,4 @@ public:
 
 	UPROPERTY()
 	class UAnimInstance* AnimInstance3P;
-
-	UFUNCTION(BlueprintCallable, Category = "Input")
-	void OnSwing();
 };

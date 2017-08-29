@@ -6,7 +6,9 @@
 #include "Character/Mannequin.h"
 #include "PlayerCharacter.generated.h"
 
+class USkeletalMeshComponent;
 class UGrabber;
+class AMelee;
 /**
  * 
  */
@@ -26,27 +28,32 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Grab")
 	void GrabItem();
 
+	USkeletalMeshComponent* GetMesh1P();
+
+	UFUNCTION(BlueprintCallable, Category = "Weapon")
+	AMelee* GetMelee();
+
 	UPROPERTY(EditDefaultsOnly, Category = "Setup")
 	TSubclassOf<class AGun> GunBlueprint;
 
-	USkeletalMeshComponent* GetMesh1P();
+	UPROPERTY(EditDefaultsOnly, Category = "Setup")
+	AMelee* Melee;
 
 protected:
 	virtual void BeginPlay() override;
 
 private:
-	bool CanGrabItem();
 
 	/** First person camera */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
 	class UCameraComponent* FirstPersonCameraComponent;
 	
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Setup", meta = (AllowPrivateAccess = "true"))
 	AGun* Gun;
 
 	/** Pawn mesh: 1st person view (arms; seen only by self) */
 	UPROPERTY(VisibleDefaultsOnly, Category = Mesh)
-	class USkeletalMeshComponent* Mesh1P;
+	USkeletalMeshComponent* Mesh1P;
 
 	UPROPERTY(VisibleDefaultsOnly, Category = "Setup")
 	UGrabber* Grabber;
