@@ -45,7 +45,7 @@ void APlayerCharacter::PullTrigger()
 		UE_LOG(LogTemp, Warning, TEXT("melee is null"));
 		return;
 	}
-	Melee->OnSwing();
+	//Melee->OnSwing();
 	//Gun->OnFire();
 }
 
