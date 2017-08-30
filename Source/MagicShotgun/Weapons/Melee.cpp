@@ -1,7 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "Melee.h"
-
+#include "GameFramework/ProjectileMovementComponent.h"
 
 // Sets default values
 AMelee::AMelee()
@@ -12,7 +12,10 @@ AMelee::AMelee()
 	Melee_Weapon = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("Weapon"));
 	Melee_Weapon->bCastDynamicShadow = false;
 	Melee_Weapon->CastShadow = false;
-	Melee_Weapon->SetupAttachment(RootComponent);
+	Melee_Weapon->SetWorldRotation(FRotator(90, 0, 0));
+	//RootComponent = Melee_Weapon;
+	ProjectileMovement = CreateDefaultSubobject<UProjectileMovementComponent>(TEXT("ProjectileComp"));
+
 }
 
 // Called when the game starts or when spawned
@@ -35,5 +38,16 @@ void AMelee::OnSwing()
 // 	FRotator additionalrotation = FRotator(90, 0, 0);
 // 	UE_LOG(LogTemp, Warning, TEXT("%s"), *(rotator.ToString()));
 // 	Melee_Weapon->SetWorldRotation(rotator+additionalrotation);
+}
+
+void AMelee::OnThrow()
+{
+	// Use a ProjectileMovementComponent to govern this projectile's movement
+// 	if (ProjectileMovement == nullptr) return;
+// 	ProjectileMovement->UpdatedComponent = Melee_Weapon;
+// 	ProjectileMovement->InitialSpeed = 3000.f;
+// 	ProjectileMovement->MaxSpeed = 3000.f;
+// 	ProjectileMovement->bRotationFollowsVelocity = true;
+// 	ProjectileMovement->bShouldBounce = true;
 }
 

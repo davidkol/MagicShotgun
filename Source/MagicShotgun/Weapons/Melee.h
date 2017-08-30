@@ -28,6 +28,10 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Input")
 	void OnSwing();
 
+
+	UFUNCTION(BlueprintCallable, Category = "Input")
+	void OnThrow();
+
 	/** Sound to play each time we fire */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Gameplay)
 	class USoundBase* SwingSound;
@@ -44,4 +48,8 @@ public:
 
 	UPROPERTY()
 	class UAnimInstance* AnimInstance3P;
+
+	/** Projectile movement component */
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Movement, meta = (AllowPrivateAccess = "true"))
+	class UProjectileMovementComponent* ProjectileMovement;
 };
