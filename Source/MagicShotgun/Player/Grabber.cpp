@@ -6,6 +6,7 @@
 #include "DrawDebugHelpers.h"
 #include "PlayerCharacter.h"
 #include "Weapons/Melee.h"
+#include "Camera/CameraComponent.h"
 #define OUT
 
 // Sets default values for this component's properties
@@ -55,39 +56,47 @@ void UGrabber::SetupInputComponent()
 void UGrabber::Grab()
 {
 	FHitResult HitResult; 
-	auto PlayerCharacter = (APlayerCharacter*)(GetOwner());
+	APlayerCharacter* PlayerCharacter = (APlayerCharacter*)(GetOwner());
 	/// If we hit something, then attach a physics handle
 	if (GetFirstPhysicsBodyInReach(HitResult))
 	{
 		PlayerCharacter->Melee = (AMelee*)(HitResult.GetActor());
 		PlayerCharacter->Melee->AttachToComponent(PlayerCharacter->GetMesh1P(), FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true), TEXT("GripPoint"));
-// 		if (!PhysicsHandle) { return; }
-// 		PhysicsHandle->GrabComponent(
-// 			ComponentToGrab,
-// 			NAME_None, // no bones needed
-// 			ComponentToGrab->GetOwner()->GetActorLocation(),
-// 			true // allow rotation
-// 		);
+		PlayerCharacter->Melee->Melee_Weapon->SetSimulatePhysics(false);
+		PlayerCharacter->Melee->bGrabbed = true;
 	}
 }
 
 void UGrabber::Release()
 {
-// 	if (!PhysicsHandle) { return; }
-// 	PhysicsHandle->ReleaseComponent();
+	APlayerCharacter* PlayerCharacter = (APlayerCharacter*)(GetOwner());
+
+	if (PlayerCharacter->Melee == nullptr)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("no weapon")); 
+		return;
+	}
+
+	PlayerCharacter->Melee->DetachFromActor(FDetachmentTransformRules::KeepRelativeTransform);
+	PlayerCharacter->Melee->Melee_Weapon->SetSimulatePhysics(true);
+	PlayerCharacter->Melee->bGrabbed = false;
+	PlayerCharacter->Melee->Melee_Weapon->SetPhysicsLinearVelocity(
+		PlayerCharacter->FirstPersonCameraComponent->GetForwardVector() * PlayerCharacter->Melee->SpeedCoefficient);
+	PlayerCharacter->Melee = nullptr;
+
+}
+
+
+void UGrabber::Launch(AMelee& Melee, FVector Forward)
+{
+	//FVector LaunchThrust = Melee.SpeedCoefficient * Forward;
+	//Melee.Melee_Weapon->SetPhysicsLinearVelocity(LaunchThrust);
 }
 
 // Called every frame
 void UGrabber::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
-// 	if (!PhysicsHandle) { return; }
-// 	// if the physics handle is attached
-// 	if (PhysicsHandle->GrabbedComponent)
-// 	{
-// 		// move the object that we're holding
-// 		PhysicsHandle->SetTargetLocation(GetReachLineEnd());
-// 	}
 
 }
 

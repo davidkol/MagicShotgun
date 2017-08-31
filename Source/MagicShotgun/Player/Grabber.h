@@ -8,6 +8,7 @@
 
 class UPhysicsHandleComponent;
 class UInputComponent;
+class AMelee;
 
 UCLASS(ClassGroup = (Custom), meta = (BlueprintSpawnableComponent))
 class MAGICSHOTGUN_API UGrabber : public UActorComponent
@@ -43,6 +44,8 @@ private:
 
 	// Call when grab is released
 	void Release();
+
+	void Launch(AMelee& Melee, FVector Forward);
 
 	// Find attached physics handle
 	void FindPhysicsHandleComponent();

@@ -17,6 +17,11 @@ public:
 
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadWrite, Category = Mesh)
 	class USkeletalMeshComponent* Melee_Weapon;
+
+	bool bGrabbed;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Gameplay")
+	float SpeedCoefficient = 1500;
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
