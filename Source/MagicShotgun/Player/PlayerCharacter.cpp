@@ -49,9 +49,17 @@ void APlayerCharacter::PullTrigger()
 	//Gun->OnFire();
 }
 
-void APlayerCharacter::GrabItem()
+bool APlayerCharacter::IsGrabbaleItemInRange()
 {
-
+	FVector MyLoc = this->GetActorLocation();
+	FVector WeaponLoc = GrabbableMelee->GetActorLocation();
+	float result = FVector::Distance(MyLoc, WeaponLoc);
+	UE_LOG(LogTemp, Warning, TEXT("%f"), result);
+	if (result < GrabRange)
+	{
+		return true;
+	}
+	return false;
 }
 
 USkeletalMeshComponent* APlayerCharacter::GetMesh1P()
@@ -62,6 +70,21 @@ USkeletalMeshComponent* APlayerCharacter::GetMesh1P()
 AMelee* APlayerCharacter::GetMelee()
 {
 	return Melee;
+}
+
+AMelee* APlayerCharacter::GetGrabbableMelee()
+{
+	return GrabbableMelee;
+}
+
+void APlayerCharacter::SetMelee(AMelee* MeleeToSet)
+{
+	Melee = MeleeToSet;
+}
+
+void APlayerCharacter::SetGrabbableMelee(AMelee* MeleeToGrab)
+{
+	GrabbableMelee = MeleeToGrab;
 }
 
 void APlayerCharacter::BeginPlay()

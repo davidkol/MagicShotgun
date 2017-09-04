@@ -26,18 +26,24 @@ public:
 	void PullTrigger();
 
 	UFUNCTION(BlueprintCallable, Category = "Grab")
-	void GrabItem();
+	bool IsGrabbaleItemInRange();
 
 	USkeletalMeshComponent* GetMesh1P();
 
 	UFUNCTION(BlueprintCallable, Category = "Weapon")
 	AMelee* GetMelee();
 
-	UPROPERTY(EditDefaultsOnly, Category = "Setup")
-	TSubclassOf<class AGun> GunBlueprint;
+	UFUNCTION(BlueprintCallable, Category = "Weapon")
+	AMelee* GetGrabbableMelee();
+
+	UFUNCTION(BlueprintCallable, Category = "Weapon")
+	void SetMelee(AMelee* MeleeToSet);
+
+	UFUNCTION(BlueprintCallable, Category = "Weapon")
+	void SetGrabbableMelee(AMelee* MeleeToGrab);
 
 	UPROPERTY(EditDefaultsOnly, Category = "Setup")
-	AMelee* Melee;
+	TSubclassOf<class AGun> GunBlueprint;
 
 	/** First person camera */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
@@ -47,9 +53,10 @@ protected:
 	virtual void BeginPlay() override;
 
 private:
+	AMelee* Melee;
 
+	AMelee* GrabbableMelee;
 	
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Setup", meta = (AllowPrivateAccess = "true"))
 	AGun* Gun;
 
 	/** Pawn mesh: 1st person view (arms; seen only by self) */
@@ -58,4 +65,7 @@ private:
 
 	UPROPERTY(VisibleDefaultsOnly, Category = "Setup")
 	UGrabber* Grabber;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Weapon")
+	float GrabRange = 500.f;
 };

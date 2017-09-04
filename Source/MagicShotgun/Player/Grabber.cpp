@@ -55,35 +55,51 @@ void UGrabber::SetupInputComponent()
 
 void UGrabber::Grab()
 {
-	FHitResult HitResult; 
 	APlayerCharacter* PlayerCharacter = (APlayerCharacter*)(GetOwner());
-	/// If we hit something, then attach a physics handle
-	if (GetFirstPhysicsBodyInReach(HitResult))
+	AMelee* PlayerMelee = PlayerCharacter->GetMelee();
+
+	if (PlayerMelee == nullptr)
 	{
-		PlayerCharacter->Melee = (AMelee*)(HitResult.GetActor());
-		PlayerCharacter->Melee->AttachToComponent(PlayerCharacter->GetMesh1P(), FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true), TEXT("GripPoint"));
-		PlayerCharacter->Melee->Melee_Weapon->SetSimulatePhysics(false);
-		PlayerCharacter->Melee->bGrabbed = true;
+		AMelee* MeleeToGrab = PlayerCharacter->GetGrabbableMelee();
+		if (MeleeToGrab != nullptr && PlayerCharacter->IsGrabbaleItemInRange())
+		{
+			PlayerMelee = MeleeToGrab;
+			PlayerMelee->AttachToComponent(PlayerCharacter->GetMesh1P(), FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true), TEXT("GripPoint"));
+			PlayerMelee->Melee_Weapon->SetSimulatePhysics(false);
+			PlayerCharacter->SetMelee(PlayerMelee);
+			PlayerCharacter->SetGrabbableMelee(nullptr);
+		}
+		else
+		{
+			UE_LOG(LogTemp, Warning, TEXT("no weapon to grab"));
+		}
 	}
+	/// If we hit something, then attach a physics handle
+// 	if (GetFirstPhysicsBodyInReach(HitResult) && PlayerMelee->bGrabbed != true)
+// 	{
+// 		PlayerMelee = (AMelee*)(HitResult.GetActor());
+// 		PlayerMelee->AttachToComponent(PlayerCharacter->GetMesh1P(), FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true), TEXT("GripPoint"));
+// 		PlayerMelee->Melee_Weapon->SetSimulatePhysics(false);
+// 		PlayerMelee->bGrabbed = true;
+// 	}
 }
 
 void UGrabber::Release()
 {
 	APlayerCharacter* PlayerCharacter = (APlayerCharacter*)(GetOwner());
+	AMelee* PlayerMelee = PlayerCharacter->GetMelee();
 
-	if (PlayerCharacter->Melee == nullptr)
+	if (PlayerMelee == nullptr)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("no weapon")); 
 		return;
 	}
 
-	PlayerCharacter->Melee->DetachFromActor(FDetachmentTransformRules::KeepRelativeTransform);
-	PlayerCharacter->Melee->Melee_Weapon->SetSimulatePhysics(true);
-	PlayerCharacter->Melee->bGrabbed = false;
-	PlayerCharacter->Melee->Melee_Weapon->SetPhysicsLinearVelocity(
-		PlayerCharacter->FirstPersonCameraComponent->GetForwardVector() * PlayerCharacter->Melee->SpeedCoefficient);
-	PlayerCharacter->Melee = nullptr;
-
+	PlayerMelee->DetachFromActor(FDetachmentTransformRules::KeepRelativeTransform);
+	PlayerMelee->Melee_Weapon->SetSimulatePhysics(true);
+	PlayerMelee->Melee_Weapon->SetPhysicsLinearVelocity(
+		PlayerCharacter->FirstPersonCameraComponent->GetForwardVector() * PlayerMelee->SpeedCoefficient);
+	PlayerCharacter->SetMelee(nullptr);
 }
 
 
