@@ -44,9 +44,9 @@ void AMelee::OnThrow()
 	// Use a ProjectileMovementComponent to govern this projectile's movement
 	if (ProjectileMovement == nullptr) return;
 	ProjectileMovement->UpdatedComponent = Melee_Weapon;
-	ProjectileMovement->InitialSpeed = SpeedCoefficient;
-	ProjectileMovement->MaxSpeed = SpeedCoefficient;
 	ProjectileMovement->bRotationFollowsVelocity = true;
 	ProjectileMovement->bShouldBounce = true;
+	ProjectileMovement->SetVelocityInLocalSpace(this->GetActorForwardVector() * SpeedCoefficient);
+
 }
 

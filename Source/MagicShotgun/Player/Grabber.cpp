@@ -7,6 +7,8 @@
 #include "PlayerCharacter.h"
 #include "Weapons/Melee.h"
 #include "Camera/CameraComponent.h"
+#include "GameFramework/ProjectileMovementComponent.h"
+
 #define OUT
 
 // Sets default values for this component's properties
@@ -44,7 +46,7 @@ void UGrabber::SetupInputComponent()
 	if (InputComponent)
 	{
 		InputComponent->BindAction("Grab", IE_Pressed, this, &UGrabber::Grab);
-		InputComponent->BindAction("Grab", IE_Released, this, &UGrabber::Release);
+		//InputComponent->BindAction("Grab", IE_Released, this, &UGrabber::Release);
 	}
 	else
 	{
@@ -64,8 +66,9 @@ void UGrabber::Grab()
 		if (MeleeToGrab != nullptr && PlayerCharacter->IsGrabbaleItemInRange())
 		{
 			PlayerMelee = MeleeToGrab;
-			PlayerMelee->AttachToComponent(PlayerCharacter->GetMesh1P(), FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true), TEXT("GripPoint"));
 			PlayerMelee->Melee_Weapon->SetSimulatePhysics(false);
+// 			PlayerMelee->ProjectileMovement->Deactivate();
+			PlayerMelee->AttachToComponent(PlayerCharacter->GetMesh1P(), FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true), TEXT("GripPoint"));
 			PlayerCharacter->SetMelee(PlayerMelee);
 			PlayerCharacter->SetGrabbableMelee(nullptr);
 		}
@@ -76,7 +79,11 @@ void UGrabber::Grab()
 	}
 	else
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Already have a weapon [%s]"), *PlayerMelee->GetName());
+		PlayerMelee->DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
+		PlayerMelee->Melee_Weapon->SetSimulatePhysics(true);
+		PlayerMelee->Melee_Weapon->SetPhysicsLinearVelocity(
+			PlayerCharacter->FirstPersonCameraComponent->GetForwardVector() * PlayerMelee->SpeedCoefficient);
+		PlayerCharacter->SetMelee(nullptr);
 	}
 
 	/// If we hit something, then attach a physics handle
@@ -99,12 +106,19 @@ void UGrabber::Release()
 		UE_LOG(LogTemp, Warning, TEXT("no weapon")); 
 		return;
 	}
+	if (PlayerMelee->ProjectileMovement == nullptr) return;
 
 	PlayerMelee->DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
 	PlayerMelee->Melee_Weapon->SetSimulatePhysics(true);
-	PlayerMelee->OnThrow();
-// 	PlayerMelee->Melee_Weapon->SetPhysicsLinearVelocity(
-// 		PlayerCharacter->FirstPersonCameraComponent->GetForwardVector() * PlayerMelee->SpeedCoefficient);
+// 	PlayerMelee->ProjectileMovement->Activate();
+// 	PlayerMelee->ProjectileMovement->UpdatedComponent = PlayerMelee->Melee_Weapon;
+// 	PlayerMelee->ProjectileMovement->bRotationFollowsVelocity = true;
+// 	PlayerMelee->ProjectileMovement->bShouldBounce = true;
+// 	PlayerMelee->ProjectileMovement->SetVelocityInLocalSpace(
+// 		PlayerCharacter->FirstPersonCameraComponent->GetForwardVector() * PlayerMelee->SpeedCoefficient * 100);
+//	PlayerMelee->OnThrow();
+	PlayerMelee->Melee_Weapon->SetPhysicsLinearVelocity(
+ 		PlayerCharacter->FirstPersonCameraComponent->GetForwardVector() * PlayerMelee->SpeedCoefficient);
 	PlayerCharacter->SetMelee(nullptr);
 }
 
