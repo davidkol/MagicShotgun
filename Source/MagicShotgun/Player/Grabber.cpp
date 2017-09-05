@@ -74,6 +74,11 @@ void UGrabber::Grab()
 			UE_LOG(LogTemp, Warning, TEXT("no weapon to grab"));
 		}
 	}
+	else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Already have a weapon [%s]"), *PlayerMelee->GetName());
+	}
+
 	/// If we hit something, then attach a physics handle
 // 	if (GetFirstPhysicsBodyInReach(HitResult) && PlayerMelee->bGrabbed != true)
 // 	{
@@ -95,10 +100,11 @@ void UGrabber::Release()
 		return;
 	}
 
-	PlayerMelee->DetachFromActor(FDetachmentTransformRules::KeepRelativeTransform);
+	PlayerMelee->DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
 	PlayerMelee->Melee_Weapon->SetSimulatePhysics(true);
-	PlayerMelee->Melee_Weapon->SetPhysicsLinearVelocity(
-		PlayerCharacter->FirstPersonCameraComponent->GetForwardVector() * PlayerMelee->SpeedCoefficient);
+	PlayerMelee->OnThrow();
+// 	PlayerMelee->Melee_Weapon->SetPhysicsLinearVelocity(
+// 		PlayerCharacter->FirstPersonCameraComponent->GetForwardVector() * PlayerMelee->SpeedCoefficient);
 	PlayerCharacter->SetMelee(nullptr);
 }
 

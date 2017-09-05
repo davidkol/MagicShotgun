@@ -9,8 +9,11 @@ AMelee::AMelee()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
+
+	//SceneComponent = CreateDefaultSubobject<USceneComponent>(TEXT("Scene"));
+	//RootComponent = SceneComponent;
 	Melee_Weapon = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("Weapon"));
-	RootComponent = Melee_Weapon;
+	//Melee_Weapon->SetupAttachment(SceneComponent);
 	Melee_Weapon->bCastDynamicShadow = false;
 	Melee_Weapon->CastShadow = false;
 	ProjectileMovement = CreateDefaultSubobject<UProjectileMovementComponent>(TEXT("ProjectileComp"));
@@ -39,11 +42,11 @@ void AMelee::OnSwing()
 void AMelee::OnThrow()
 {
 	// Use a ProjectileMovementComponent to govern this projectile's movement
-// 	if (ProjectileMovement == nullptr) return;
-// 	ProjectileMovement->UpdatedComponent = Melee_Weapon;
-// 	ProjectileMovement->InitialSpeed = 3000.f;
-// 	ProjectileMovement->MaxSpeed = 3000.f;
-// 	ProjectileMovement->bRotationFollowsVelocity = true;
-// 	ProjectileMovement->bShouldBounce = true;
+	if (ProjectileMovement == nullptr) return;
+	ProjectileMovement->UpdatedComponent = Melee_Weapon;
+	ProjectileMovement->InitialSpeed = SpeedCoefficient;
+	ProjectileMovement->MaxSpeed = SpeedCoefficient;
+	ProjectileMovement->bRotationFollowsVelocity = true;
+	ProjectileMovement->bShouldBounce = true;
 }
 

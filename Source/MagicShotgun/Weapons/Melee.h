@@ -18,6 +18,9 @@ public:
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadWrite, Category = Mesh)
 	class USkeletalMeshComponent* Melee_Weapon;
 
+ 	UPROPERTY(VisibleDefaultsOnly, Category = Mesh)
+ 	class USceneComponent* SceneComponent;
+
 	bool bGrabbed;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Gameplay")
