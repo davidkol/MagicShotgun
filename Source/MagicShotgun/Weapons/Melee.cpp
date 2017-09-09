@@ -11,7 +11,7 @@ AMelee::AMelee()
 	PrimaryActorTick.bCanEverTick = true;
 
 	//SceneComponent = CreateDefaultSubobject<USceneComponent>(TEXT("Scene"));
-	//RootComponent = SceneComponent;
+	RootComponent = Melee_Weapon;
 	Melee_Weapon = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("Weapon"));
 	//Melee_Weapon->SetupAttachment(SceneComponent);
 	Melee_Weapon->bCastDynamicShadow = false;
@@ -36,7 +36,7 @@ void AMelee::Tick(float DeltaTime)
 
 void AMelee::OnSwing()
 {
-	
+
 }
 
 void AMelee::OnThrow()
@@ -48,5 +48,25 @@ void AMelee::OnThrow()
 	ProjectileMovement->bShouldBounce = true;
 	ProjectileMovement->SetVelocityInLocalSpace(this->GetActorForwardVector() * SpeedCoefficient);
 
+}
+
+void AMelee::ReduceDurability(float DuraDamage)
+{
+	Durability = Durability - DuraDamage;
+}
+
+float AMelee::GetDurability()
+{
+	return Durability;
+}
+
+bool AMelee::GetThrownStatus()
+{
+	return bThrown;
+}
+
+void AMelee::SetThrownStatus(bool Status)
+{
+	bThrown = Status;
 }
 

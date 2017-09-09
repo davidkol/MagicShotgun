@@ -40,12 +40,13 @@ void APlayerCharacter::SetupPlayerInputComponent(class UInputComponent* PlayerIn
 
 void APlayerCharacter::PullTrigger()
 {
-	if (Melee == nullptr)
+	if (Melee != nullptr)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("melee is null"));
+		Melee->OnSwing();
 		return;
 	}
-	//Melee->OnSwing();
+	UE_LOG(LogTemp, Warning, TEXT("melee is null"));
+	return;
 	//Gun->OnFire();
 }
 

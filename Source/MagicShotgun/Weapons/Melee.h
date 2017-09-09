@@ -21,10 +21,16 @@ public:
  	UPROPERTY(VisibleDefaultsOnly, Category = Mesh)
  	class USceneComponent* SceneComponent;
 
-	bool bGrabbed;
+	bool bGrabbed = false;
+
+	bool bThrown = false;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Gameplay")
 	float SpeedCoefficient = 1500;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Gameplay")
+	float Durability = 100;
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -39,6 +45,18 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "Input")
 	void OnThrow();
+
+	UFUNCTION(BlueprintCallable, Category = "Gameplay")
+	void ReduceDurability(float DuraDamage);
+
+	UFUNCTION(BlueprintCallable, Category = "Gameplay")
+	float GetDurability();
+
+	UFUNCTION(BlueprintCallable, Category = "Gameplay")
+	bool GetThrownStatus();
+
+	UFUNCTION(BlueprintCallable, Category = "Gameplay")
+	void SetThrownStatus(bool Status);
 
 	/** Sound to play each time we fire */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Gameplay)

@@ -43,7 +43,7 @@ private:
 	void Grab();
 
 	// Call when grab is released
-	void Release();
+	void Switch();
 
 	void Launch(AMelee& Melee, FVector Forward);
 
