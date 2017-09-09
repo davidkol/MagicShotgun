@@ -10,16 +10,16 @@ UCLASS()
 class MAGICSHOTGUN_API AGun : public AActor
 {
 	GENERATED_BODY()
+public:
 
 	/** Gun mesh: 1st person view (seen only by self) */
-	UPROPERTY(VisibleDefaultsOnly, Category = Mesh)
+	UPROPERTY(VisibleDefaultsOnly, BlueprintReadWrite, Category = Mesh)
 	class USkeletalMeshComponent* FP_Gun;
 
 	/** Location on gun mesh where projectiles should spawn. */
 	UPROPERTY(VisibleDefaultsOnly, Category = Mesh)
 	class USceneComponent* FP_MuzzleLocation;
 
-public:	
 	// Sets default values for this actor's properties
 	AGun();
 
