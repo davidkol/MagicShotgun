@@ -42,9 +42,14 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Input")
 	void OnSwing();
 
-
 	UFUNCTION(BlueprintCallable, Category = "Input")
 	void OnThrow();
+
+	UFUNCTION(BlueprintCallable, Category = "Input")
+	void SwitchTo();
+
+	UFUNCTION(BlueprintCallable, Category = "Input")
+	void SwitchFrom();
 
 	UFUNCTION(BlueprintCallable, Category = "Gameplay")
 	void ReduceDurability(float DuraDamage);

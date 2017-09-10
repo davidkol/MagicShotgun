@@ -9,6 +9,7 @@
 #include "Camera/CameraComponent.h"
 #include "GameFramework/ProjectileMovementComponent.h"
 #include "Misc/OutputDeviceDebug.h"
+#include "../Weapons/Gun.h"
 #define OUT
 
 // Sets default values for this component's properties
@@ -64,22 +65,22 @@ void UGrabber::Grab()
 	{
 		AMelee* MeleeToGrab = PlayerCharacter->GetGrabbableMelee();
 		if (MeleeToGrab != nullptr && PlayerCharacter->IsGrabbaleItemInRange())
-		{
+		{//pickup weapon
 			PlayerMelee = MeleeToGrab;
 			PlayerMelee->Melee_Weapon->SetSimulatePhysics(false);
 //  			PlayerMelee->SetThrownStatus(false);
 			PlayerMelee->AttachToComponent(PlayerCharacter->GetMesh1P(), FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true), TEXT("GripPoint"));
 			PlayerCharacter->SetMelee(PlayerMelee);
 			PlayerCharacter->SetGrabbableMelee(nullptr);
-
+			PlayerCharacter->SetIsMeleeEquipped(true);
 		}
 		else
 		{
 			UE_LOG(LogTemp, Warning, TEXT("no weapon to grab"));
 		}
 	}
-	else
-	{
+	else if (PlayerCharacter->IsMeleeEquipped())
+	{//throw weapon
 		PlayerMelee->DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
 		PlayerMelee->Melee_Weapon->SetSimulatePhysics(true);
 		PlayerMelee->Melee_Weapon->SetPhysicsLinearVelocity(
@@ -98,6 +99,7 @@ void UGrabber::Grab()
 // 			PlayerMelee->ProjectileMovement->bShouldBounce = true;
 // 		}
 		PlayerCharacter->SetMelee(nullptr);
+		PlayerCharacter->SetIsMeleeEquipped(false);
 	}
 
 
@@ -108,6 +110,20 @@ void UGrabber::Switch()
 	APlayerCharacter* PlayerCharacter = (APlayerCharacter*)(GetOwner());
 	AMelee* PlayerMelee = PlayerCharacter->GetMelee();
 	
+	if (PlayerMelee == nullptr) return;
+
+	if (PlayerCharacter->IsMeleeEquipped())
+	{
+		PlayerMelee->AttachToComponent(PlayerCharacter->GetMesh(), FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true), TEXT("SheathPoint"));
+		PlayerCharacter->SetIsMeleeEquipped(false);
+		PlayerCharacter->GetGun()->FP_Gun->AttachToComponent(PlayerCharacter->GetMesh1P(), FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true), TEXT("GunPoint"));
+	}
+	else
+	{
+		PlayerMelee->AttachToComponent(PlayerCharacter->GetMesh1P(), FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true), TEXT("GripPoint"));
+		PlayerCharacter->SetIsMeleeEquipped(true);
+		PlayerCharacter->GetGun()->FP_Gun->AttachToComponent(PlayerCharacter->GetMesh(), FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true), TEXT("SheathPoint"));
+	}
 
 // 	if (PlayerMelee == nullptr)
 // 	{

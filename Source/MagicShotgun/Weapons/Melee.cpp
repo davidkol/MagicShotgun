@@ -50,6 +50,16 @@ void AMelee::OnThrow()
 
 }
 
+void AMelee::SwitchTo()
+{
+	//this->
+}
+
+void AMelee::SwitchFrom()
+{
+
+}
+
 void AMelee::ReduceDurability(float DuraDamage)
 {
 	Durability = Durability - DuraDamage;

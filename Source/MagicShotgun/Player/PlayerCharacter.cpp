@@ -41,7 +41,7 @@ void APlayerCharacter::SetupPlayerInputComponent(class UInputComponent* PlayerIn
 
 void APlayerCharacter::PullTrigger()
 {
-	if (Melee != nullptr)
+	if (Melee != nullptr && IsMeleeEquipped())
 	{
 		Melee->OnSwing();
 		return;
@@ -75,19 +75,34 @@ AMelee* APlayerCharacter::GetMelee()
 	return Melee;
 }
 
-AMelee* APlayerCharacter::GetGrabbableMelee()
-{
-	return GrabbableMelee;
-}
-
 void APlayerCharacter::SetMelee(AMelee* MeleeToSet)
 {
 	Melee = MeleeToSet;
 }
 
+AMelee* APlayerCharacter::GetGrabbableMelee()
+{
+	return GrabbableMelee;
+}
+
 void APlayerCharacter::SetGrabbableMelee(AMelee* MeleeToGrab)
 {
 	GrabbableMelee = MeleeToGrab;
+}
+
+bool APlayerCharacter::IsMeleeEquipped()
+{
+	return bIsMeleeEquipped;
+}
+
+void APlayerCharacter::SetIsMeleeEquipped(bool Status)
+{
+	bIsMeleeEquipped = Status;
+}
+
+AGun* APlayerCharacter::GetGun()
+{
+	return Gun;
 }
 
 void APlayerCharacter::BeginPlay()

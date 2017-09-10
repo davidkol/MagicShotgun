@@ -9,6 +9,8 @@
 class USkeletalMeshComponent;
 class UGrabber;
 class AMelee;
+class AGun;
+
 /**
  * 
  */
@@ -34,13 +36,22 @@ public:
 	AMelee* GetMelee();
 
 	UFUNCTION(BlueprintCallable, Category = "Weapon")
-	AMelee* GetGrabbableMelee();
-
-	UFUNCTION(BlueprintCallable, Category = "Weapon")
 	void SetMelee(AMelee* MeleeToSet);
 
 	UFUNCTION(BlueprintCallable, Category = "Weapon")
+	AMelee* GetGrabbableMelee();
+
+	UFUNCTION(BlueprintCallable, Category = "Weapon")
 	void SetGrabbableMelee(AMelee* MeleeToGrab);
+
+	UFUNCTION(BlueprintCallable, Category = "Weapon")
+	bool IsMeleeEquipped();
+
+	UFUNCTION(BlueprintCallable, Category = "Weapon")
+	void SetIsMeleeEquipped(bool Status);
+
+	UFUNCTION(BlueprintCallable, Category = "Weapon")
+	AGun* GetGun();
 
 	UPROPERTY(EditDefaultsOnly, Category = "Setup")
 	TSubclassOf<class AGun> GunBlueprint;
@@ -58,6 +69,8 @@ private:
 	AMelee* GrabbableMelee;
 	
 	AGun* Gun;
+
+	bool bIsMeleeEquipped = false;
 
 	/** Pawn mesh: 1st person view (arms; seen only by self) */
 	UPROPERTY(VisibleDefaultsOnly, Category = Mesh)
