@@ -125,31 +125,31 @@ void UGrabber::Switch()
 		PlayerCharacter->GetGun()->FP_Gun->AttachToComponent(PlayerCharacter->GetMesh(), FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true), TEXT("SheathPoint"));
 	}
 
-// 	if (PlayerMelee == nullptr)
-// 	{
-// 		UE_LOG(LogTemp, Warning, TEXT("no weapon")); 
-// 		return;
-// 	}
-// 	if (PlayerMelee->ProjectileMovement == nullptr) return;
-// 
-// 	PlayerMelee->DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
-// 	PlayerMelee->Melee_Weapon->SetSimulatePhysics(true);
-// 	PlayerMelee->ProjectileMovement->Activate();
-// 	PlayerMelee->ProjectileMovement->UpdatedComponent = PlayerMelee->Melee_Weapon;
-// 	PlayerMelee->ProjectileMovement->bRotationFollowsVelocity = true;
-// 	PlayerMelee->ProjectileMovement->bShouldBounce = true;
-// 	PlayerMelee->ProjectileMovement->SetVelocityInLocalSpace(
-// 		PlayerCharacter->FirstPersonCameraComponent->GetForwardVector() * PlayerMelee->SpeedCoefficient * 100);
-// 	PlayerMelee->OnThrow();
-// 	PlayerMelee->Melee_Weapon->SetPhysicsLinearVelocity(
-//  		PlayerCharacter->FirstPersonCameraComponent->GetForwardVector() * PlayerMelee->SpeedCoefficient);
-// 	PlayerCharacter->SetMelee(nullptr);
 }
 
 
 void UGrabber::Launch(AMelee& Melee, FVector Forward)
 {
-	
+
+	// 	if (PlayerMelee == nullptr)
+	// 	{
+	// 		UE_LOG(LogTemp, Warning, TEXT("no weapon")); 
+	// 		return;
+	// 	}
+	// 	if (PlayerMelee->ProjectileMovement == nullptr) return;
+	// 
+	// 	PlayerMelee->DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
+	// 	PlayerMelee->Melee_Weapon->SetSimulatePhysics(true);
+	// 	PlayerMelee->ProjectileMovement->Activate();
+	// 	PlayerMelee->ProjectileMovement->UpdatedComponent = PlayerMelee->Melee_Weapon;
+	// 	PlayerMelee->ProjectileMovement->bRotationFollowsVelocity = true;
+	// 	PlayerMelee->ProjectileMovement->bShouldBounce = true;
+	// 	PlayerMelee->ProjectileMovement->SetVelocityInLocalSpace(
+	// 		PlayerCharacter->FirstPersonCameraComponent->GetForwardVector() * PlayerMelee->SpeedCoefficient * 100);
+	// 	PlayerMelee->OnThrow();
+	// 	PlayerMelee->Melee_Weapon->SetPhysicsLinearVelocity(
+	//  		PlayerCharacter->FirstPersonCameraComponent->GetForwardVector() * PlayerMelee->SpeedCoefficient);
+	// 	PlayerCharacter->SetMelee(nullptr);
 }
 
 // Called every frame
