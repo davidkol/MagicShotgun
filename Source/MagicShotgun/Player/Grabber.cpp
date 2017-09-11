@@ -27,6 +27,7 @@ void UGrabber::BeginPlay()
 	Super::BeginPlay();
 	FindPhysicsHandleComponent();
 	SetupInputComponent();
+	PlayerCharacter = (APlayerCharacter*)(GetOwner());
 }
 
 // Look for attached Physics Handle
@@ -58,7 +59,6 @@ void UGrabber::SetupInputComponent()
 
 void UGrabber::Grab()
 {
-	APlayerCharacter* PlayerCharacter = (APlayerCharacter*)(GetOwner());
 	AMelee* PlayerMelee = PlayerCharacter->GetMelee();
 
 	if (PlayerMelee == nullptr)
@@ -68,38 +68,25 @@ void UGrabber::Grab()
 		{//pickup weapon
 			PlayerMelee = MeleeToGrab;
 			PlayerMelee->Melee_Weapon->SetSimulatePhysics(false);
-//  			PlayerMelee->SetThrownStatus(false);
 			PlayerMelee->AttachToComponent(PlayerCharacter->GetMesh1P(), FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true), TEXT("GripPoint"));
 			PlayerCharacter->SetMelee(PlayerMelee);
 			PlayerCharacter->SetGrabbableMelee(nullptr);
-			PlayerCharacter->SetIsMeleeEquipped(true);
+			PlayerCharacter->SetEquipState(EEquipState::ShotgunArmed);
+			Switch();
 		}
 		else
 		{
 			UE_LOG(LogTemp, Warning, TEXT("no weapon to grab"));
 		}
 	}
-	else if (PlayerCharacter->IsMeleeEquipped())
+	else if (PlayerCharacter->GetEquipState() == EEquipState::Armed)
 	{//throw weapon
 		PlayerMelee->DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
 		PlayerMelee->Melee_Weapon->SetSimulatePhysics(true);
 		PlayerMelee->Melee_Weapon->SetPhysicsLinearVelocity(
 			PlayerCharacter->FirstPersonCameraComponent->GetForwardVector() * PlayerMelee->SpeedCoefficient);
-// 		PlayerMelee->SetThrownStatus(true);
-// 		FOutputDeviceDebug debug;
-// 		PlayerMelee->CallFunctionByNameWithArguments(TEXT("PlayThrow"), debug, NULL, true);
-//		PlayerMelee->ProjectileMovement = CreateDefaultSubobject<UProjectileMovementComponent>(TEXT("ProjectileComp"));
-// 		if (PlayerMelee->ProjectileMovement != nullptr)
-// 		{
-// 			//PlayerMelee->ProjectileMovement->Activate();
-// 			PlayerMelee->ProjectileMovement->UpdatedComponent = PlayerMelee->Melee_Weapon;
-// 			PlayerMelee->ProjectileMovement->InitialSpeed = 3000.f;
-// 			PlayerMelee->ProjectileMovement->MaxSpeed = 3000.f;
-// 			PlayerMelee->ProjectileMovement->bRotationFollowsVelocity = true;
-// 			PlayerMelee->ProjectileMovement->bShouldBounce = true;
-// 		}
 		PlayerCharacter->SetMelee(nullptr);
-		PlayerCharacter->SetIsMeleeEquipped(false);
+		PlayerCharacter->SetEquipState(EEquipState::Unarmed);
 	}
 
 
@@ -107,21 +94,28 @@ void UGrabber::Grab()
 
 void UGrabber::Switch()
 {
-	APlayerCharacter* PlayerCharacter = (APlayerCharacter*)(GetOwner());
 	AMelee* PlayerMelee = PlayerCharacter->GetMelee();
 	
-	if (PlayerMelee == nullptr) return;
-
-	if (PlayerCharacter->IsMeleeEquipped())
+	if (PlayerCharacter->GetEquipState() == EEquipState::Unarmed)
 	{
-		PlayerMelee->AttachToComponent(PlayerCharacter->GetMesh(), FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true), TEXT("SheathPoint"));
-		PlayerCharacter->SetIsMeleeEquipped(false);
+		PlayerCharacter->SetEquipState(EEquipState::ShotgunUnarmed);
 		PlayerCharacter->GetGun()->FP_Gun->AttachToComponent(PlayerCharacter->GetMesh1P(), FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true), TEXT("GunPoint"));
 	}
-	else
+	else if (PlayerCharacter->GetEquipState() == EEquipState::Armed)
+	{
+		PlayerMelee->AttachToComponent(PlayerCharacter->GetMesh(), FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true), TEXT("SheathPoint"));
+		PlayerCharacter->SetEquipState(EEquipState::ShotgunArmed);
+		PlayerCharacter->GetGun()->FP_Gun->AttachToComponent(PlayerCharacter->GetMesh1P(), FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true), TEXT("GunPoint"));
+	}
+	else if (PlayerCharacter->GetEquipState() == EEquipState::ShotgunUnarmed)
+	{
+		PlayerCharacter->SetEquipState(EEquipState::Unarmed);
+		PlayerCharacter->GetGun()->FP_Gun->AttachToComponent(PlayerCharacter->GetMesh(), FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true), TEXT("SheathPoint"));
+	}
+	else //ShotgunArmed
 	{
 		PlayerMelee->AttachToComponent(PlayerCharacter->GetMesh1P(), FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true), TEXT("GripPoint"));
-		PlayerCharacter->SetIsMeleeEquipped(true);
+		PlayerCharacter->SetEquipState(EEquipState::Armed);
 		PlayerCharacter->GetGun()->FP_Gun->AttachToComponent(PlayerCharacter->GetMesh(), FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true), TEXT("SheathPoint"));
 	}
 
@@ -150,6 +144,21 @@ void UGrabber::Launch(AMelee& Melee, FVector Forward)
 	// 	PlayerMelee->Melee_Weapon->SetPhysicsLinearVelocity(
 	//  		PlayerCharacter->FirstPersonCameraComponent->GetForwardVector() * PlayerMelee->SpeedCoefficient);
 	// 	PlayerCharacter->SetMelee(nullptr);
+
+	//throw
+	// 		PlayerMelee->SetThrownStatus(true);
+	// 		FOutputDeviceDebug debug;
+	// 		PlayerMelee->CallFunctionByNameWithArguments(TEXT("PlayThrow"), debug, NULL, true);
+	//		PlayerMelee->ProjectileMovement = CreateDefaultSubobject<UProjectileMovementComponent>(TEXT("ProjectileComp"));
+	// 		if (PlayerMelee->ProjectileMovement != nullptr)
+	// 		{
+	// 			//PlayerMelee->ProjectileMovement->Activate();
+	// 			PlayerMelee->ProjectileMovement->UpdatedComponent = PlayerMelee->Melee_Weapon;
+	// 			PlayerMelee->ProjectileMovement->InitialSpeed = 3000.f;
+	// 			PlayerMelee->ProjectileMovement->MaxSpeed = 3000.f;
+	// 			PlayerMelee->ProjectileMovement->bRotationFollowsVelocity = true;
+	// 			PlayerMelee->ProjectileMovement->bShouldBounce = true;
+	// 		}
 }
 
 // Called every frame

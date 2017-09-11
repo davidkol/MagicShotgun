@@ -11,6 +11,14 @@ class UGrabber;
 class AMelee;
 class AGun;
 
+UENUM()
+enum class EEquipState : uint8
+{
+	Unarmed,
+	Armed,
+	ShotgunUnarmed,
+	ShotgunArmed
+};
 /**
  * 
  */
@@ -45,10 +53,10 @@ public:
 	void SetGrabbableMelee(AMelee* MeleeToGrab);
 
 	UFUNCTION(BlueprintCallable, Category = "Weapon")
-	bool IsMeleeEquipped();
+	EEquipState GetEquipState();
 
 	UFUNCTION(BlueprintCallable, Category = "Weapon")
-	void SetIsMeleeEquipped(bool Status);
+	void SetEquipState(EEquipState State);
 
 	UFUNCTION(BlueprintCallable, Category = "Weapon")
 	AGun* GetGun();
@@ -60,6 +68,10 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
 	class UCameraComponent* FirstPersonCameraComponent;
 
+	/** Pawn mesh: 1st person view (arms; seen only by self) */
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Mesh)
+	USkeletalMeshComponent* Mesh1P;
+
 protected:
 	virtual void BeginPlay() override;
 
@@ -70,11 +82,7 @@ private:
 	
 	AGun* Gun;
 
-	bool bIsMeleeEquipped = false;
-
-	/** Pawn mesh: 1st person view (arms; seen only by self) */
-	UPROPERTY(VisibleDefaultsOnly, Category = Mesh)
-	USkeletalMeshComponent* Mesh1P;
+	EEquipState CurrentEquipState = EEquipState::Unarmed;
 
 	UPROPERTY(VisibleDefaultsOnly, Category = "Setup")
 	UGrabber* Grabber;

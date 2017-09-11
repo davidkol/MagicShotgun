@@ -9,6 +9,7 @@
 class UPhysicsHandleComponent;
 class UInputComponent;
 class AMelee;
+class APlayerCharacter;
 
 UCLASS(ClassGroup = (Custom), meta = (BlueprintSpawnableComponent))
 class MAGICSHOTGUN_API UGrabber : public UActorComponent
@@ -38,6 +39,7 @@ private:
 	UPhysicsHandleComponent* PhysicsHandle = nullptr;
 	UInputComponent* InputComponent = nullptr;
 
+	APlayerCharacter* PlayerCharacter;
 
 	// Ray-cast and grab whats in reach
 	void Grab();

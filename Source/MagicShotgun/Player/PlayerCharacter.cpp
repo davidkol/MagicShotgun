@@ -41,15 +41,16 @@ void APlayerCharacter::SetupPlayerInputComponent(class UInputComponent* PlayerIn
 
 void APlayerCharacter::PullTrigger()
 {
-	if (Melee != nullptr && IsMeleeEquipped())
+	if (Melee != nullptr && CurrentEquipState == EEquipState::Armed)
 	{
 		Melee->OnSwing();
 		return;
 	}
-	Gun->OnFire();
-	//UE_LOG(LogTemp, Warning, TEXT("melee is null"));
-	return;
-	
+
+	if (CurrentEquipState == EEquipState::ShotgunArmed || CurrentEquipState == EEquipState::ShotgunUnarmed)
+	{
+		Gun->OnFire();
+	}
 }
 
 bool APlayerCharacter::IsGrabbaleItemInRange()
@@ -90,14 +91,14 @@ void APlayerCharacter::SetGrabbableMelee(AMelee* MeleeToGrab)
 	GrabbableMelee = MeleeToGrab;
 }
 
-bool APlayerCharacter::IsMeleeEquipped()
+EEquipState APlayerCharacter::GetEquipState()
 {
-	return bIsMeleeEquipped;
+	return CurrentEquipState;
 }
 
-void APlayerCharacter::SetIsMeleeEquipped(bool Status)
+void APlayerCharacter::SetEquipState(EEquipState State)
 {
-	bIsMeleeEquipped = Status;
+	CurrentEquipState = State;
 }
 
 AGun* APlayerCharacter::GetGun()
