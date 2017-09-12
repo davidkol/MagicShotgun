@@ -117,7 +117,7 @@ void APlayerCharacter::BeginPlay()
 	Gun = GetWorld()->SpawnActor<AGun>(GunBlueprint);
 	if (IsPlayerControlled())
 	{
-		Gun->AttachToComponent(GetMesh(), FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true), TEXT("SheathPoint")); //Attach gun mesh component to Skeleton, doing it here because the skelton is not yet created in the constructor
+		Gun->AttachToComponent(GetMesh(), FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true), TEXT("SheathPoint_Gun")); //Attach gun mesh component to Skeleton, doing it here because the skelton is not yet created in the constructor
 	}
 	else
 	{
