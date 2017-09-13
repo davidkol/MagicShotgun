@@ -56,5 +56,10 @@ public:
 	/** Fires a projectile. */
 	UFUNCTION(BlueprintCallable, Category = "Input")
 	void OnFire();
+private:
+	UPROPERTY(EditDefaultsOnly, Category = Projectile)
+	float RotationRange = 3.f;
 
+	UPROPERTY(EditDefaultsOnly, Category = Projectile)
+	int32 ShotCount = 18;
 };

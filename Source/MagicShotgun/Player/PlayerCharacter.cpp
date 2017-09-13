@@ -46,10 +46,11 @@ void APlayerCharacter::PullTrigger()
 		Melee->OnSwing();
 		return;
 	}
-
+	//Charge >= 99.f && 
 	if (CurrentEquipState == EEquipState::ShotgunArmed || CurrentEquipState == EEquipState::ShotgunUnarmed)
 	{
-		Gun->OnFire();
+		//Gun->OnFire();
+		
 	}
 }
 
@@ -104,6 +105,16 @@ void APlayerCharacter::SetEquipState(EEquipState State)
 AGun* APlayerCharacter::GetGun()
 {
 	return Gun;
+}
+
+void APlayerCharacter::AdjustCharge(float DeltaTime, float CurveCoefficient)
+{
+	Charge = FMath::Clamp(CurveCoefficient * DeltaTime * 1.666667f + Charge, 0.f, 100.f);
+}
+
+float APlayerCharacter::GetCharge()
+{
+	return Charge;
 }
 
 void APlayerCharacter::BeginPlay()

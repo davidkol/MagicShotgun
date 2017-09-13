@@ -61,6 +61,12 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Weapon")
 	AGun* GetGun();
 
+	UFUNCTION(BlueprintCallable, Category = "Weapon")
+	void AdjustCharge(float DeltaTime, float CurveCoefficient);
+
+	UFUNCTION(BlueprintCallable, Category = "Weapon")
+	float GetCharge();
+
 	UPROPERTY(EditDefaultsOnly, Category = "Setup")
 	TSubclassOf<class AGun> GunBlueprint;
 
@@ -89,4 +95,6 @@ private:
 
 	UPROPERTY(EditDefaultsOnly, Category = "Weapon")
 	float GrabRange = 500.f;
+
+	float Charge = 0.f;
 };
