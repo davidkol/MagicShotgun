@@ -68,7 +68,7 @@ void UGrabber::Grab()
 		{//pickup weapon
 			PlayerMelee = MeleeToGrab;
 			PlayerMelee->Melee_Weapon->SetSimulatePhysics(false);
-			PlayerMelee->AttachToComponent(PlayerCharacter->GetMesh1P(), FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true), TEXT("GripPoint"));
+			PlayerMelee->AttachToComponent(PlayerCharacter->GetMesh1P(), FAttachmentTransformRules(EAttachmentRule::KeepWorld, true), TEXT("GripPoint"));
 			PlayerCharacter->SetMelee(PlayerMelee);
 			PlayerCharacter->SetGrabbableMelee(nullptr);
 			PlayerCharacter->SetEquipState(EEquipState::ShotgunArmed);
