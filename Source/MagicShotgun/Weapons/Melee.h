@@ -31,6 +31,9 @@ public:
 	UPROPERTY(EditDefaultsOnly, Category = "Gameplay")
 	float Durability = 100;
 
+	UPROPERTY(EditDefaultsOnly, Category = "Gameplay")
+	float Reach = 50;
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -62,6 +65,9 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "Gameplay")
 	void SetThrownStatus(bool Status);
+
+	UFUNCTION(BlueprintCallable, Category = "Gameplay")
+	float GetReach();
 
 	/** Sound to play each time we fire */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Gameplay)

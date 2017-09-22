@@ -80,3 +80,8 @@ void AMelee::SetThrownStatus(bool Status)
 	bThrown = Status;
 }
 
+float AMelee::GetReach()
+{
+	return Reach;
+}
+
