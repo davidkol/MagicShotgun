@@ -95,28 +95,30 @@ void UGrabber::Grab()
 void UGrabber::Switch()
 {
 	AMelee* PlayerMelee = PlayerCharacter->GetMelee();
-	
+	USkeletalMeshComponent* PlayerGun = PlayerCharacter->GetGun()->FP_Gun;
+	USkeletalMeshComponent* PlayerMesh = PlayerCharacter->GetMesh1P();
+
 	if (PlayerCharacter->GetEquipState() == EEquipState::Unarmed)
 	{
 		PlayerCharacter->SetEquipState(EEquipState::ShotgunUnarmed);
-		PlayerCharacter->GetGun()->FP_Gun->AttachToComponent(PlayerCharacter->GetMesh1P(), FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true), TEXT("GunPoint"));
+		PlayerGun->AttachToComponent(PlayerMesh, FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true), TEXT("GunPoint"));
 	}
 	else if (PlayerCharacter->GetEquipState() == EEquipState::Armed)
 	{
-		PlayerMelee->AttachToComponent(PlayerCharacter->GetMesh(), FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true), TEXT("SheathPoint_Melee"));
+		PlayerMelee->AttachToComponent(PlayerMesh, FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true), TEXT("SheathPoint_Gun"));
 		PlayerCharacter->SetEquipState(EEquipState::ShotgunArmed);
-		PlayerCharacter->GetGun()->FP_Gun->AttachToComponent(PlayerCharacter->GetMesh1P(), FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true), TEXT("GunPoint"));
+		PlayerGun->AttachToComponent(PlayerMesh, FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true), TEXT("GunPoint"));
 	}
 	else if (PlayerCharacter->GetEquipState() == EEquipState::ShotgunUnarmed)
 	{
 		PlayerCharacter->SetEquipState(EEquipState::Unarmed);
-		PlayerCharacter->GetGun()->FP_Gun->AttachToComponent(PlayerCharacter->GetMesh(), FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true), TEXT("SheathPoint_Gun"));
+		PlayerGun->AttachToComponent(PlayerMesh, FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true), TEXT("SheathPoint_Melee"));
 	}
 	else //ShotgunArmed
 	{
-		PlayerMelee->AttachToComponent(PlayerCharacter->GetMesh1P(), FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true), TEXT("GripPoint"));
+		PlayerMelee->AttachToComponent(PlayerMesh, FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true), TEXT("GripPoint"));
 		PlayerCharacter->SetEquipState(EEquipState::Armed);
-		PlayerCharacter->GetGun()->FP_Gun->AttachToComponent(PlayerCharacter->GetMesh(), FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true), TEXT("SheathPoint_Gun"));
+		PlayerGun->AttachToComponent(PlayerMesh, FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true), TEXT("SheathPoint_Melee"));
 	}
 
 }
