@@ -35,5 +35,8 @@
 			"Name": "SteamVR",
 			"Enabled": false
 		}
+	],
+	"AdditionalPluginDirectories": [
+		"Intermediate/Plugins"
 	]
 }
