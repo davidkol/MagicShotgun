@@ -85,6 +85,7 @@ void UGrabber::Grab()
 		PlayerMelee->Melee_Weapon->SetSimulatePhysics(true);
 		PlayerMelee->Melee_Weapon->SetPhysicsLinearVelocity(
 			PlayerCharacter->FirstPersonCameraComponent->GetForwardVector() * PlayerMelee->SpeedCoefficient);
+		PlayerMelee->SetThrownStatus(true);
 		PlayerCharacter->SetMelee(nullptr);
 		PlayerCharacter->SetEquipState(EEquipState::Unarmed);
 	}
