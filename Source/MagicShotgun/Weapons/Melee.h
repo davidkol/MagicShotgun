@@ -75,16 +75,22 @@ public:
 	
 	/** AnimMontage to play each time we fire */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Gameplay)
-	class UAnimMontage* SwingAnimation1P;
+	class UAnimSequence* SwingAnimation1;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Gameplay)
-	class UAnimMontage* SwingAnimation3P;
+	class UAnimSequence* SwingAnimation2;
 
-	UPROPERTY()
-	class UAnimInstance* AnimInstance1P;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Gameplay)
+	class UAnimSequence* IdleAnimation;
 
-	UPROPERTY()
-	class UAnimInstance* AnimInstance3P;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Gameplay)
+	TSubclassOf<class UCameraShake> CameraShake1;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Gameplay)
+	TSubclassOf<class UCameraShake> CameraShake2;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Gameplay)
+	TSubclassOf<class AActor> DamageComponent;
 
 	/** Projectile movement component */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Movement, meta = (AllowPrivateAccess = "true"))
