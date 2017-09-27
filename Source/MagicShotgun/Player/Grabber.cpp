@@ -10,6 +10,7 @@
 #include "GameFramework/ProjectileMovementComponent.h"
 #include "Misc/OutputDeviceDebug.h"
 #include "../Weapons/Gun.h"
+#include "Kismet/GameplayStatics.h"
 #define OUT
 
 // Sets default values for this component's properties
@@ -70,6 +71,7 @@ void UGrabber::Grab()
 			PlayerMelee->Melee_Weapon->SetSimulatePhysics(false);
 			PlayerMelee->AttachToComponent(PlayerCharacter->GetMesh1P(), FAttachmentTransformRules(EAttachmentRule::KeepWorld, true), TEXT("GripPoint"));
 			PlayerCharacter->SetMelee(PlayerMelee);
+			PlayerMelee->SetThrownStatus(false);
 			PlayerCharacter->SetGrabbableMelee(nullptr);
 			PlayerCharacter->SetEquipState(EEquipState::ShotgunArmed);
 			Switch();
@@ -87,7 +89,9 @@ void UGrabber::Grab()
 			PlayerCharacter->FirstPersonCameraComponent->GetForwardVector() * PlayerMelee->SpeedCoefficient);
 		PlayerMelee->SetThrownStatus(true);
 		PlayerCharacter->SetMelee(nullptr);
+		PlayerCharacter->SetGrabbableMelee(nullptr);
 		PlayerCharacter->SetEquipState(EEquipState::Unarmed);
+		UGameplayStatics::PlaySound2D(GetWorld(), PlayerCharacter->ThrowSound);
 	}
 
 

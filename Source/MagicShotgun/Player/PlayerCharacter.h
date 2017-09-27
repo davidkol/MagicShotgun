@@ -65,6 +65,9 @@ public:
 	void AdjustCharge(float DeltaTime, float CurveCoefficient);
 
 	UFUNCTION(BlueprintCallable, Category = "Weapon")
+	void SetCharge(float NewChargeValue);
+
+	UFUNCTION(BlueprintCallable, Category = "Weapon")
 	float GetCharge();
 
 	UPROPERTY(EditDefaultsOnly, Category = "Setup")
@@ -77,6 +80,9 @@ public:
 	/** Pawn mesh: 1st person view (arms; seen only by self) */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Mesh)
 	USkeletalMeshComponent* Mesh1P;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Gameplay)
+	class USoundBase* ThrowSound;
 
 protected:
 	virtual void BeginPlay() override;

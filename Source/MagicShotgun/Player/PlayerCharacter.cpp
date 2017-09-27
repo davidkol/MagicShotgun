@@ -112,6 +112,11 @@ void APlayerCharacter::AdjustCharge(float DeltaTime, float CurveCoefficient)
 	Charge = FMath::Clamp(CurveCoefficient * DeltaTime * 1.666667f + Charge, 0.f, 100.f);
 }
 
+void APlayerCharacter::SetCharge(float NewChargeValue)
+{
+	Charge = NewChargeValue;
+}
+
 float APlayerCharacter::GetCharge()
 {
 	return Charge;
