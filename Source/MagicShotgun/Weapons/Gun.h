@@ -56,6 +56,8 @@ public:
 	/** Fires a projectile. */
 	UFUNCTION(BlueprintCallable, Category = "Input")
 	void OnFire();
+
+	bool dick();
 private:
 	UPROPERTY(EditDefaultsOnly, Category = Projectile)
 	float RotationRange = 3.f;

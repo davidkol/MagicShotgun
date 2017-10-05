@@ -88,3 +88,8 @@ void AGun::OnFire()
 // 	}
 }
 
+bool AGun::dick()
+{
+	return false;
+}
+
