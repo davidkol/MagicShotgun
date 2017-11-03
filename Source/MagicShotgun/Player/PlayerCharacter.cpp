@@ -34,6 +34,11 @@ APlayerCharacter::APlayerCharacter()
 	
 }
 
+void APlayerCharacter::Tick(float DeltaTime)
+{
+
+}
+
 void APlayerCharacter::SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);

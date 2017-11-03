@@ -76,6 +76,11 @@ bool AMelee::GetThrownStatus()
 	return bThrown;
 }
 
+bool AMelee::GetGrabStatus()
+{
+	return bGrabbed;
+}
+
 void AMelee::SetThrownStatus(bool Status)
 {
 	bThrown = Status;

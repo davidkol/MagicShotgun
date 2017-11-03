@@ -3,6 +3,7 @@
 #include "Grabber.h"
 #include "PhysicsEngine/PhysicsHandleComponent.h"
 #include "Components/InputComponent.h"
+#include "Components/PrimitiveComponent.h"
 #include "DrawDebugHelpers.h"
 #include "PlayerCharacter.h"
 #include "Weapons/Melee.h"
@@ -71,7 +72,8 @@ void UGrabber::Grab()
 			PlayerMelee->Melee_Weapon->SetSimulatePhysics(false);
 			PlayerMelee->AttachToComponent(PlayerCharacter->GetMesh1P(), FAttachmentTransformRules(EAttachmentRule::KeepWorld, true), TEXT("GripPoint"));
 			PlayerCharacter->SetMelee(PlayerMelee);
-			PlayerMelee->SetThrownStatus(false);
+			PlayerMelee->bGrabbed = true;
+			PlayerMelee->Melee_Weapon->SetRenderCustomDepth(false);
 			PlayerCharacter->SetGrabbableMelee(nullptr);
 			PlayerCharacter->SetEquipState(EEquipState::ShotgunArmed);
 			Switch();
@@ -87,7 +89,7 @@ void UGrabber::Grab()
 		PlayerMelee->Melee_Weapon->SetSimulatePhysics(true);
 		PlayerMelee->Melee_Weapon->SetPhysicsLinearVelocity(
 			PlayerCharacter->FirstPersonCameraComponent->GetForwardVector() * PlayerMelee->SpeedCoefficient);
-		PlayerMelee->SetThrownStatus(true);
+		PlayerMelee->bGrabbed = false;
 		PlayerCharacter->SetMelee(nullptr);
 		PlayerCharacter->SetGrabbableMelee(nullptr);
 		PlayerCharacter->SetEquipState(EEquipState::Unarmed);

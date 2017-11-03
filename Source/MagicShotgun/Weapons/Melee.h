@@ -64,6 +64,9 @@ public:
 	bool GetThrownStatus();
 
 	UFUNCTION(BlueprintCallable, Category = "Gameplay")
+	bool GetGrabStatus();
+
+	UFUNCTION(BlueprintCallable, Category = "Gameplay")
 	void SetThrownStatus(bool Status);
 
 	UFUNCTION(BlueprintCallable, Category = "Gameplay")
